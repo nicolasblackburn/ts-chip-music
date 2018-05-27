@@ -16,5 +16,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var audio = __importStar(require("./audio"));
-var audioContext = new AudioContext();
+var audioContext = new audio.AudioContextWrapper();
 Object.assign(window, __assign({ audio: audioContext }, audio));
+var button = document.createElement('button');
+button.type = 'button';
+button.innerText = 'Play example';
+button.addEventListener('click', function () {
+    audioContext.playNotesAtTime(audio.OscillatorType.Triangle, 60, 'c3q c d# c3 g#2 g# a# g# '.repeat(2) + 'a#2q a# c3 a#2 f f g# f '.repeat(2), 0, audioContext);
+    audioContext.playNotesAtTime(audio.OscillatorType.Noise, 60, 'c3qv0.35 c c6 c3 c c c6h '.repeat(4), 0, audioContext);
+});
+document.body.appendChild(button);
