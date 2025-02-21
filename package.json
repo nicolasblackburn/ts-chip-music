@@ -5,16 +5,13 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server"
+    "build": "esbuild src/index.ts --bundle --outfile=\"www/main.bundle.js\"",
+    "serve": "node server.js"
   },
   "author": "Nicolas Blackburn <nicolas@nblackburn.ca>",
   "license": "ISC",
   "devDependencies": {
-    "babel-polyfill": "^6.26.0",
-    "copy-webpack-plugin": "^4.5.1",
-    "ts-loader": "^4.3.0",
-    "uglifyjs-webpack-plugin": "^1.2.5",
-    "webpack": "^4.8.3",
-    "webpack-dev-server": "^3.1.4"
+    "esbuild": "^0.25.0",
+    "express": "^4.21.2"
   }
 }
