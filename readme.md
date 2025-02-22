@@ -11,7 +11,7 @@ The interface comprises of 5 channels, of which you can select the oscillator ty
 1. Install dependencies `npm install`
 2. Build project `npm run build`
 3. Serve static files `npm run serve`
-4. Open your browser at [http://localhost:8080]
+4. Open your browser at [http://localhost:8080](http://localhost:8080)
 
 This will launch a webpage with a button that plays a demo.
 
