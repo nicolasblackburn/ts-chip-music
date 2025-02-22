@@ -7,7 +7,7 @@ export enum OscillatorType {
     Noise
 }
 
-export class AudioContextWrapper {
+export class PlayAudioContext {
     public sources: AudioNode[] = [];
     public context: AudioContext;
 
@@ -15,7 +15,7 @@ export class AudioContextWrapper {
         this.context = new AudioContext();
     }
 
-    public playNotesAtTime(oscillatorType: OscillatorType, tempo: number, notes: string | [number, number, number, number][], time: number, audio: AudioContextWrapper) {
+    public play(oscillatorType: OscillatorType, tempo: number, notes: string | [number, number, number, number][], time: number = 0) {
         let currentTime = time;
         let parsedNotes;
 
@@ -123,7 +123,7 @@ export class AudioContextWrapper {
         const pitchRe = /^([abcdefg-])([#b])?([0-9])?$/;
         const durationRe = /^([zliuwhqestxo])(\.*)?([0-9])?$/;
         const volumeRe = /^v(.+)$/;
-        let buffer = notes.trim();
+        let buffer = notes.replace(/\s+/g, ' ');
         let tokens = buffer.match(tokenRe);
         let lastOctave = 4;
         let lastNote = 0;

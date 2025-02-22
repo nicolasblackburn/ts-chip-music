@@ -1,17 +1,6 @@
 "use strict";
 (() => {
-  var __defProp = Object.defineProperty;
-  var __export = (target, all) => {
-    for (var name in all)
-      __defProp(target, name, { get: all[name], enumerable: true });
-  };
-
   // src/audio.ts
-  var audio_exports = {};
-  __export(audio_exports, {
-    AudioContextWrapper: () => AudioContextWrapper,
-    OscillatorType: () => OscillatorType
-  });
   var OscillatorType = /* @__PURE__ */ ((OscillatorType2) => {
     OscillatorType2[OscillatorType2["Sine"] = 0] = "Sine";
     OscillatorType2[OscillatorType2["Square"] = 1] = "Square";
@@ -20,12 +9,12 @@
     OscillatorType2[OscillatorType2["Noise"] = 4] = "Noise";
     return OscillatorType2;
   })(OscillatorType || {});
-  var AudioContextWrapper = class {
+  var PlayAudioContext = class {
     constructor() {
       this.sources = [];
       this.context = new AudioContext();
     }
-    playNotesAtTime(oscillatorType, tempo2, notes, time, audio) {
+    play(oscillatorType, tempo2, notes, time = 0) {
       let currentTime = time;
       let parsedNotes;
       if (typeof notes === "string") {
@@ -120,7 +109,7 @@
       const pitchRe = /^([abcdefg-])([#b])?([0-9])?$/;
       const durationRe = /^([zliuwhqestxo])(\.*)?([0-9])?$/;
       const volumeRe = /^v(.+)$/;
-      let buffer = notes.trim();
+      let buffer = notes.replace(/\s+/g, " ");
       let tokens = buffer.match(tokenRe);
       let lastOctave = 4;
       let lastNote = 0;
@@ -204,33 +193,30 @@
   };
 
   // src/index.ts
-  var audioContext = new AudioContextWrapper();
-  Object.assign(window, {
-    audio: audioContext,
-    ...audio_exports
-  });
-  var entries = Object.entries(OscillatorType).filter(([k, v]) => !isNaN(Number(v)));
+  var context = new PlayAudioContext();
+  var types = Object.entries(OscillatorType).filter(([k, v]) => !isNaN(Number(v)));
   var examples = [
     "",
     "",
     "",
-    "c3q c d# c3 g#2 g# a# g# ".repeat(2) + "a#2q a# c3 a#2 f f g# f ".repeat(2),
-    "c3qv0.35 c c6 c3 c c c6h ".repeat(4)
+    "c3q c d# c3 g#2 g# a# g# \n".repeat(2) + "a#2q a# c3 a#2 f f g# f \n".repeat(2),
+    "c3qv0.35 c c6 c3 c c c6 c \n".repeat(4)
   ];
   var div = document.createElement("div");
   div.innerHTML = `
 <label>Tempo: <input id="tempo" type="text" size="4" value="60" /></label>
 <table>
 <tbody>
-  ${entries.map(
+  ${types.map(
     ([_, i]) => `<tr><td>
     <select id="type${i}">
-      ${Object.entries(OscillatorType).filter(([k, v]) => !isNaN(Number(v))).map(
+      <option value="-1">None</option>
+      ${types.map(
       ([k, v]) => `<option value="${v}" ${v === i && "selected"}>${k}</option>`
     ).join("")}
     </select>
   </td><td>
-    <input id="notes${i}" type="text" value="${examples[i]}" />
+    <textarea id="notes${i}" rows="4">${examples[i]}</textarea>
   </td></tr>`
   ).join("")}
 </tbody>
@@ -245,8 +231,16 @@
   }));
   var play = document.getElementById("play");
   play.addEventListener("click", () => {
-    for (const { type, notes } of channels) {
-      audioContext.playNotesAtTime(Number(type.value), Number(tempo.value), notes.value, 0, audioContext);
+    try {
+      for (const { type, notes } of channels) {
+        if (Number(type.value) !== -1) {
+          if (notes.value.trim()) {
+            context.play(Number(type.value), Number(tempo.value), notes.value);
+          }
+        }
+      }
+    } catch (e) {
+      alert(e.stack);
     }
   });
 })();
