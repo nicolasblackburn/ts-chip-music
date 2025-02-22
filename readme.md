@@ -1,6 +1,10 @@
 # Typescript Chip Music
 
-This project is a very minimal chip tune scripting language inspired by the `play` command from [Hypertalk](https://wiki.xxiivv.com/site/hypertalk.html) language. It consists of a rudimentary parser that transform a string of notes to real sounds that are played using the web audio API to generate sounds. You can find a good description of the notation here [jsPlayCommand](https://www.kreativekorp.com/lib/jsPlayCommand/). `jsPlayCommand` is similar to this project in that it allows you to play some music using the Hypertalk notation, but both implementations are different. `jsPlayCommand` uses Midi instead of the web audio API.
+This project is a very minimal chip tune scripting language inspired by the `play` command from [Hypertalk](https://wiki.xxiivv.com/site/hypertalk.html) language. It consists of a rudimentary parser that transform a string of notes to real sounds that are played using the web audio API to generate sounds. 
+
+You can find a good description of the notation here [jsPlayCommand](https://www.kreativekorp.com/lib/jsPlayCommand/). `jsPlayCommand` is similar to this project in that it allows you to play some music using the Hypertalk notation, but both implementations are different. `jsPlayCommand` uses Midi instead of the web audio API.
+
+The interface comprises of 5 channels, of which you can select the oscillator type. You can control the tempo in beats per minute. The `play` button is used to initiate the playback of the channels.
 
 # Getting started
 
